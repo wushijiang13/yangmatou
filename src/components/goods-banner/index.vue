@@ -1,5 +1,6 @@
 <template>
-    <div class="goods-swiper-box" :focusable="true" :enableFocusBorder="false" :focusScale="1.05" eventFocus>
+    <div class="goods-swiper-box" :focusable="true" :enableFocusBorder="false" :focusScale="1.05" eventFocus
+        layout="${layout}">
         <swiper ref="swiperRef" class="goods-swiper" :initialPage="2" needAnimation :current="currentSlide"
             @dragging="onDragging" @dropped="onDropped" @stateChanged="onStateChanged">
             <swiper-slide class="swiper-slide">
@@ -44,7 +45,7 @@ onMounted(() => {
 
 <style scoped>
 .goods-swiper-box {
-    width: 900px;
+    width: 890px;
     height: 340px;
     border-radius: 20px;
     overflow: hidden;
@@ -52,7 +53,7 @@ onMounted(() => {
 }
 
 .goods-swiper {
-    width: 900px;
+    width: 890px;
     height: 340px;
     border-radius: 20px;
 }

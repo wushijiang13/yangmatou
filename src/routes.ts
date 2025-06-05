@@ -3,19 +3,24 @@ import test from './views/test.vue'
 
 const routes = [
   {
-    path: '/home',
-    name: 'home',
-    component: home
-  },
-  {
     path: '/goods/detail',
     name: 'goodsDetail',
     component: ()=>import('./views/goods/detail.vue')
   },
   {
-    path: '/user/userinfo',
-    name: 'userinfo',
-    component: ()=>import('./views/user/userinfo.vue')
+    path: '/home',
+    name: 'home',
+    component: home
+  },
+  {
+    path: '/user/info',
+    name: 'info',
+    component: ()=>import('./views/user/info.vue')
+  },
+  {
+    path: '/user/order',
+    name: 'order',
+    component: ()=>import('./views/user/order.vue')
   },
   {
     path: '/test',

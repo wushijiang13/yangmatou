@@ -1,12 +1,13 @@
 <template>
-    <div class="goods-item-box" :focusable="true" :enableFocusBorder="false" :focusScale="1.05" eventClick eventFocus>
-
-        <img class="goods-item-img" :duplicateParentState="true" :focusable="false" :enableFocusBorder="false"
+    <div :class="size == 'default' ? 'goods-item-box' : 'goods-smail-item-box'" layout="${layout}" :focusable="true"
+        :enableFocusBorder="false" :focusScale="1.05" eventClick eventFocus>
+        <img :class="size == 'default' ? 'goods-item-img' : 'goods-smail-item-img'" :duplicateParentState="true"
+            :focusable="false" :enableFocusBorder="false"
             src="https://img1.baidu.com/it/u=2666955302,2339578501&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750" />
-
-        <text-view class="goods-label" :duplicateParentState="true" :focusable="false" :textSize="26" :ellipsizeMode="2"
-            enablePostTask :lines="1" gravity="center" text="海蓝之谜 修复精华60ml 赠送" />
-        <div class="goods-price-box" :duplicateParentState="true">
+        <text-view :class="size == 'default' ? 'goods-label' : 'goods-smail-label'" :duplicateParentState="true"
+            :focusable="false" :textSize="26" :ellipsizeMode="2" enablePostTask :lines="1" gravity="center"
+            text="海蓝之谜 修复精华60ml 赠送" />
+        <div v-show="isShowPrice" class="goods-price-box" :duplicateParentState="true">
             <div class="goods-original-price-box" :duplicateParentState="true">
                 <qt-text class="goods-line" :duplicateParentState="true" :autoWidth="true" text="1232">
                 </qt-text>
@@ -27,8 +28,18 @@
     </div>
 </template>
 
-<script lang="ts">
-
+<script lang="ts" setup>
+import { defineProps } from 'vue'
+const props = defineProps({
+    isShowPrice: {
+        type: Boolean,
+        default: true
+    },
+    size: {
+        type: String,
+        default: 'default'
+    }
+})
 </script>
 
 <style scoped>
@@ -43,12 +54,16 @@
     focus-background-color: white;
 }
 
+
+
 .goods-item-img {
     width: 280px;
     height: 270px;
     margin-top: 0px;
     border-radius: 20px;
 }
+
+
 
 .goods-label {
     margin-top: 10px;
@@ -138,5 +153,34 @@
     justify-items: flex-end;
     text-align: right;
     margin-bottom: 8px;
+}
+
+.goods-smail-item-box {
+    width: 250px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    focus-background-color: white;
+}
+
+.goods-smail-item-img {
+    width: 230px;
+    height: 240px;
+    margin-top: 0px;
+    border-radius: 20px;
+}
+
+.goods-smail-label {
+    margin-top: 10px;
+    width: 250px;
+    height: 30px;
+    background-color: transparent;
+    color: white;
+    focus-color: black;
+    select-color: black;
+    align-self: flex-start;
 }
 </style>

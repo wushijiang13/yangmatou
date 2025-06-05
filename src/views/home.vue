@@ -40,7 +40,7 @@ const jumpTest = () => {
 
 const jumpUser = () => {
   router.push({
-    name: 'userinfo',
+    name: 'info',
   })
 }
 onMounted(() => {

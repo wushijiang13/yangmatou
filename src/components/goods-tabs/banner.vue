@@ -1,23 +1,10 @@
 <template>
     <div>
         <qt-tabs ref="tabRef" tabPageClass="qt-tabs-content-css" @onTabPageLoadData="onTabPageLoadData"
-            class="qt-tabs-waterfall-root-css">
-            <template v-slot:waterfall-vue-section>
-                <!-- <div>
-                   
-                    
-                </div> -->
-                <!-- <qt-grid-view ref="gridViewBannerRef" :listData="BannerData" class="grid-banner-box" :spanCount="2"
-                    :areaWidth="1900">
-
-                </qt-grid-view> -->
-                <!--  -->
-                <goodsBanner :focusable="false" />
-                <qt-grid-view ref="gridViewItemRef" :listData="goodsItemData" class="grid-item-box" clipChildren="false"
-                    :clipPadding="false" :enablePlaceholder="true" :preloadNo="5" :listenBoundEvent="true"
-                    :openPage="true" :spanCount="5" @item-click="jumpDetail">
-                    <goodsItem :type="1" :focusable="true" eventClick />
-                </qt-grid-view>
+            class="qt-tabs-waterfall-root-css" @onTabPageItemClick="jumpDetail">
+            <template v-slot:waterfall-item>
+                <goodsItem :type="1" :focusable="true" eventClick />
+                <goodsBanner :type="2" :focusable="true" />
             </template>
         </qt-tabs>
     </div>
@@ -29,8 +16,7 @@ import {
     QTWaterfallSection, QTTabItem, qtTabsRef, QTWaterfallSectionType, QTTabPageData,
     QTITab, QTTab, QTWaterfall, QTPoster, qtRef
 } from "@quicktvui/quicktvui3";
-import type { QTIWaterfall, QTWaterfallItem } from '@quicktvui/quicktvui3'
-import { generatorAppWaterfallSection } from "../__mocks__/app";
+import type { QTWaterfallItem } from '@quicktvui/quicktvui3'
 import { useESRouter } from '@extscreen/es3-router'
 import goodsItem from '../goods-item/index.vue'
 import goodsBanner from '../goods-banner/index.vue'
@@ -48,16 +34,70 @@ const props: GoodsTabs.GoodsTabsBannerProps = defineProps({
 const tabRef = ref<QTITab>()
 const BannerData = qtRef()
 const goodsItemData = qtRef()
-
+let pageIndexLast = -1;
+const initBannerData = (sectionId: string): Array<QTWaterfallItem> => {
+    let data: Array<QTWaterfallItem> = []
+    let imgURL = 'https://img1.baidu.com/it/u=2666955302,2339578501&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750'
+    for (let i = 0; i < 2; i++) {
+        const item: QTWaterfallItem = {
+            _id: `${sectionId}_${i}`,
+            type: 2,
+            decoration: {
+                left: 70,
+                top: 20,
+                bottom: 10,
+            },
+            appIcon: 'http://qcloudimg.a311.ottcn.com/data_center/files/2022/08/02/56c9ff53-0117-44cf-b5c3-e732bd3c7ef8.jpg',
+            appName: '123',
+            style: {
+                width: 850,
+                height: 340,
+            }
+        }
+        data.push(item)
+    }
+    return data;
+}
+const initGoodsItemData = (sectionId: string): Array<QTWaterfallItem> => {
+    let data: Array<QTWaterfallItem> = []
+    let imgURL = 'https://img1.baidu.com/it/u=2666955302,2339578501&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750'
+    for (let i = 0; i < 15; i++) {
+        const item: QTWaterfallItem = {
+            _id: `${sectionId}_${i}`,
+            type: 1,
+            decoration: {
+                left: 70,
+                bottom: 40,
+            },
+            appIcon: 'http://qcloudimg.a311.ottcn.com/data_center/files/2022/08/02/56c9ff53-0117-44cf-b5c3-e732bd3c7ef8.jpg',
+            appName: '123',
+            style: {
+                width: 300,
+                height: 370,
+            }
+        }
+        data.push(item)
+    }
+    return data;
+}
 function onTabPageLoadData(
     pageIndex: number,
     pageNo: number,
     useDiff: boolean
 ): void {
-    const sectionOne: QTWaterfallSection = {
+    console.log('---------loadPageData---------->>>' +
+        '  pageIndex:' + pageIndex +
+        '  useDiff:' + useDiff
+    )
+    if (pageIndexLast === pageIndex) {
+        return
+    }
+    pageIndexLast = pageIndex
+    let sectionList: Array<QTWaterfallSection> = []
+    let banner_section: QTWaterfallSection = {
         _id: '1',
-        type: QTWaterfallSectionType.QT_WATERFALL_SECTION_TYPE_VUE,
-        itemList: [],
+        type: QTWaterfallSectionType.QT_WATERFALL_SECTION_TYPE_FLEX,
+        itemList: initBannerData(`banner`),
         style: {
             width: 1920,
             height: 320,
@@ -65,28 +105,28 @@ function onTabPageLoadData(
         decoration: {
             top: 20,
             bottom: 20,
-        },
+        }
     }
-    const sectionList: Array<QTWaterfallSection> = [sectionOne]
+    sectionList.push(banner_section)
+    for (let i = 0; i < 1; ++i) {
+        let goods_section: QTWaterfallSection = {
+            _id: '2',
+            type: QTWaterfallSectionType.QT_WATERFALL_SECTION_TYPE_FLEX,
+            itemList: initGoodsItemData(`goods`),
+            style: {
+                width: 1920,
+                height: -1,
+            },
+        }
+        console.log(goods_section)
+        sectionList.push(goods_section)
+    }
 
     const tabPage: QTTabPageData = {
-        useDiff,
-        data: sectionList,
+        useDiff: useDiff,
+        data: sectionList
     }
     tabRef.value?.setPageData(pageIndex, tabPage)
-}
-
-const loadMore = () => {
-
-}
-const onItemClick = () => {
-    console.log("执行onItemClick")
-}
-const onItemFocus = () => {
-    console.log("执行onItemFocus")
-    router.push({
-        name: 'goodsDetail',
-    })
 }
 
 /**
@@ -95,7 +135,7 @@ const onItemFocus = () => {
 const initTabs = () => {
     const tabItemList: Array<QTTabItem> = []
     props.tabList.forEach((item, index) => {
-        const section: QTWaterfallSection = generatorAppWaterfallSection('0', "")
+        // const section: QTWaterfallSection = generatorAppWaterfallSection('0', "")
         const tabItem: QTTabItem = {
             _id: `${index}`,
             type: 20000,
@@ -138,16 +178,6 @@ const initWaterGoodsItem = () => {
 }
 
 
-const initWaterGoodsBanner = () => {
-    BannerData.value = new Array(2).fill(1).map((_, index) => {
-        return {
-            text: index + '',
-            type: 1,
-            decoration: { left: 30, right: 30, bottom: 6 },
-        }
-    })
-}
-
 const jumpDetail = () => {
     console.log("触发了")
     router.push({
@@ -157,7 +187,6 @@ const jumpDetail = () => {
 
 onMounted(() => {
     initTabs();
-    // initWaterGoodsBanner();
     initWaterGoodsItem();
 })
 
@@ -188,6 +217,24 @@ onMounted(() => {
     overflow: hidden;
     background-color: #000;
     /* z-index: 999; */
+}
+
+.banner-box {
+    width: 1920px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.goods-item-box {
+    width: 1920px;
+    height: 390px;
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    justify-content: space-around;
+    /* background-color: aqua; */
 }
 
 .water-banner-box {
