@@ -1,0 +1,30 @@
+.first-btn {
+    margin-right: 40px;
+    margin-left: 20px;
+}
+
+.btn-space {
+    margin-right: 40px;
+}
+
+.header-title {
+    width: 200px;
+    height: 50px;
+    color: #fff;
+    font-size: 44px;
+    margin-bottom: 4px;
+    margin-left: 0px;
+}
+
+.page-box {
+    width: 1920px;
+    height: 1080px;
+    background-color: #1b1f29;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.dis-flex-around{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}  

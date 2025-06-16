@@ -14,6 +14,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@extscreen/es3-axios": "^0.0.1-alpha.1",
     "@extscreen/es3-component": "1.0.35",
     "@extscreen/es3-core": "1.1.44",
     "@extscreen/es3-router": "1.1.29",

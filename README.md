@@ -1,6 +1,5 @@
-# yangmatou
-
-This template should help get you started developing with Vue 3.
+# 开发规范
+- button 按钮 统一使用 small round
 
 ## Recommended IDE Setup
 

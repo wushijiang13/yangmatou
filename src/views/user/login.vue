@@ -1,21 +1,16 @@
 <template>
-  <div class="page-box" :focusable="false">
-    <headerBox>
-      <template #header-left>
-        <qt-text class="header-title" text="我的订单"></qt-text>
-      </template>
-    </headerBox>
+  <div class="page-box dis-flex-around" :focusable="false">
     <div class="order-qt-code-box">
       <qt-text class="order-qr-content" text="微信扫码查看订单/物流状态" :focusable="false"></qt-text>
       <div class="order-qr-color">
         <qt-qr-code class="order-qr-code" content="http://www.xxxx.com/" :optimize="true" />
       </div>
     </div>
+
   </div>
 </template>
 
 <script lang="ts" setup>
-import headerBox from 'src/components/header/headerBox.vue';
 import { ref } from 'vue'
 
 </script>

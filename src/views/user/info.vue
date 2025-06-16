@@ -1,6 +1,10 @@
 <template>
-  <div class="userinfo-box">
-    <qt-text class="userinfo-title" text="个人中心" :focusable="false"></qt-text>
+  <div class="page-box">
+    <HeaderBox>
+      <template #header-left>
+        <qt-text class="header-title" text="个人中心" :focusable="false"></qt-text>
+      </template>
+    </HeaderBox>
     <div class="user-header-box">
       <div class="login-box">
         <div class="login-left-box">
@@ -19,7 +23,7 @@
     <qt-text class="browse-title" text="浏览记录" :focusable="false"></qt-text>
     <div class="browse-box">
       <goodsItem v-for="item in 5" @click="jumpDetail" :is-show-price="false" :size="'smail'" />
-      <div class="browse-btn-box" :focusable="true">
+      <div class="browse-btn-box" @click="jumpRecord" :focusable="true">
         <qt-image class="browse-image" :src="time"></qt-image>
         <qt-text class="browse-text" text="全部记录"></qt-text>
       </div>
@@ -39,6 +43,7 @@ import time from '../../assets/user/time.png'
 import order from '../../assets/user/order.png'
 import user from '../../assets/user.png'
 import { useESRouter } from '@extscreen/es3-router'
+import HeaderBox from 'src/components/header/headerBox.vue'
 const router = useESRouter()
 const otherBtnList = ref([
   {
@@ -64,16 +69,13 @@ const jumpOrder = () => {
     name: 'order',
   })
 }
+const jumpRecord = () => {
+  router.push({
+    name: 'record',
+  })
+}
 </script>
 <style>
-.userinfo-box {
-  width: 1920px;
-  height: 1080px;
-  background-color: #1b1f29;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
 .userinfo-title {
   width: 300px;
   height: 50px;
@@ -145,7 +147,6 @@ const jumpOrder = () => {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 40px;
   margin-bottom: 10px;
 }
 

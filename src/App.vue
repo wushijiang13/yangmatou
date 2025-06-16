@@ -29,3 +29,4 @@ export default defineComponent({
   flex-direction: column;
 }
 </style>
+<style src="./styles/index.css" />

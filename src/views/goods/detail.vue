@@ -5,12 +5,11 @@
       <qt-text class="detail-header-content" text="本服务由洋码头提供" :textSize="24"></qt-text>
     </div>
     <div class="detail-line" :focusable="false"></div>
-    <div class="detail-mian-box">
+    <div class="detail-mian-box" :focusable="false">
       <div class="detail-left-box">
-        <qt-list-view :makeChildVisibleClampBackward="50" class="detail-img-list" :listData="listDatas">
-          <div :type="1" enableFlexStyle :focusable="true" class="detail-img-waterfall">
-            <qt-image src="https://img1.baidu.com/it/u=2666955302,2339578501&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750"
-              class="detail-img" />
+        <qt-list-view :makeChildVisibleClampBackward="0" class="detail-img-list" :listData="listDatas">
+          <div :type="1" :focusable="true" class="detail-img-waterfall">
+            <qt-image src="${imageUrl}" :enableFade="true" class="detail-img" />
             <div class="detail-img-count-box" :focusable="false">
               <qt-text class="detail-img-count" :autoWidth="true" :autoHeight="true" text="${count}" />
             </div>
@@ -19,53 +18,59 @@
 
       </div>
       <div class="detail-right-box">
-        <div class="goods-red-tips-box" :focusable="false">
-          <qt-text class="goods-red-tips" :gravity="'center'" text="码头自营" />
-        </div>
-        <qt-text class="goods-title" :focusable="true" :lineSpacing="10" :ellipsizeMode="4"
-          :gravity="'centerHorizontal'" :lines="2"
-          :text="`${titleLeftText}La Mar/海蓝之谜 修复晶萃水乳套装 精粹水150ML+精粹乳125ml 修护加乘粹水150ML+精粹乳125ml 修护加乘乳125ml 修护加乘`" />
-        <qt-grid-view ref="gridViewRef" class="grid-discount-box" :listData="discountList" :spanCount="4"
+        <!-- <div class="goods-red-tips-box" :focusable="false">
+          <qt-text class="goods-red-tips" :gravity="'center'" :text="info.deliveryTypeDesc" />
+        </div> -->
+        <!-- ${titleLeftText} -->
+        <qt-text class="goods-title" :focusable="false" :lineSpacing="10" :ellipsizeMode="4"
+          :gravity="'centerVertical | top'" :lines="2" :text="`${info.title}`" />
+
+        <!-- <qt-grid-view ref="gridViewRef" class="grid-discount-box" :listData="discountList" :spanCount="4"
           :areaWidth="920">
           <div type="1" class="goods-discount-item">
             <qt-text class="goods-discount-text" :gravity="'center'" :autoWidth="true" :lines="1" text="${content}"
               :ellipsizeMode="2" />
           </div>
-        </qt-grid-view>
-        <qt-waterfall ref="waterfall" class="price-waterfall-box">
+        </qt-grid-view> -->
+        <!-- <qt-waterfall ref="waterfall" class="price-waterfall-box">
           <template #section>
-            <div :type="1" class="goods-price-box">
-              <qt-text class="goods-unit" :autoWidth="true" :autoHeight="true" text="￥"></qt-text>
-              <qt-text class="goods-price-text" :autoWidth="true" :autoHeight="true" text="1075"></qt-text>
-              <div class="goods-original-price-box">
-                <qt-text class="delete-line" :autoWidth="true" text="原价 ￥ 1450"></qt-text>
-                <qt-text class="goods-original-price-title" :autoWidth="true" :autoHeight="true" text="原价"></qt-text>
-                <qt-text class="goods-original-price-unit" :autoWidth="true" :autoHeight="true" text="￥"></qt-text>
-                <qt-text class="goods-original-price-text" :autoWidth="true" :autoHeight="true" text="1450"></qt-text>
-              </div>
-            </div>
+            
           </template>
-        </qt-waterfall>
+</qt-waterfall> -->
+        <div class="goods-price-box">
+          <qt-text class="goods-unit" text="￥"></qt-text>
+          <qt-text class="goods-price-text" :autoWidth="true" :autoHeight="true" :text="info.newPrice"></qt-text>
+          <!-- <div class="goods-original-price-box">
+            <qt-text class="delete-line" :autoWidth="true" text="原价 ￥ 1450"></qt-text>
+            <qt-text class="goods-original-price-title" :autoWidth="true" :autoHeight="true" text="原价"></qt-text>
+            <qt-text class="goods-original-price-unit" :autoWidth="true" :autoHeight="true" text="￥"></qt-text>
+            <qt-text class="goods-original-price-text" :autoWidth="true" :autoHeight="true" text="1450"></qt-text>
+          </div> -->
+        </div>
 
-
-        <qt-text class="goods-price-tips-text" text="商品价格已含进口税"></qt-text>
+        <qt-text v-show="info.dutyDesc == '商品价格已含进口税'" class="goods-price-tips-text" :text="info.dutyDesc"></qt-text>
         <div class="goods-price-line" />
-        <div v-for="item in serviceList" class="service-cell-box">
-          <qt-image class="service-icon" :src="item.icon" />
-          <qt-text class="service-title" :gravity="'center'" :text="item.title"></qt-text>
-          <qt-text class="service-content" :gravity="'centerVertical|right'" :text="item.content"></qt-text>
+        <div v-for="item in serviceList">
+          <div v-if="(item.key == 'delivery' && info.deliveryTypeDesc) || item.key != 'delivery'"
+            class="service-cell-box">
+            <qt-image class="service-icon" :src="item.icon" />
+            <qt-text class="service-title" :gravity="'center'" :text="item.title"></qt-text>
+            <qt-text class="service-content" :gravity="'centerVertical|right'" :text="item.content"></qt-text>
+          </div>
         </div>
         <div class="buy-box" :focusable="false">
-          <qt-button :focusable="true" round text="按OK键立即购买" @click="purchaseClick" :style="{
+          <!-- <qt-button :focusable="true" round text="按OK键立即购买" @click="purchaseClick" :style="{
             backgroundColor: '#ff0000',
             width: '600px',
           }" :textStyle="{
             color: '#fff',
-          }" />
+          }" /> -->
+          <qt-image :src="qrcodeImage" class="purchase-qr-code" />
+          <qt-text class="purchase-qr-content" text="微信扫码购买"></qt-text>
         </div>
       </div>
     </div>
-    <dialogs :is-show="purchaseShow">
+    <!-- <dialogs :is-show="purchaseShow">
       <div class="purchase-box">
         <div class="purchase-qr-color">
           <qt-qr-code ref="purchaseQrCodeRef" class="purchase-qr-code" content="http://www.xxxx.com/"
@@ -73,30 +78,50 @@
         </div>
         <qt-text class="purchase-qr-text" text="使用手机微信，扫码购买"></qt-text>
       </div>
-    </dialogs>
+    </dialogs> -->
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import deliverys from '../../assets/detail/deliverys.png'
 import guarantee from '../../assets/detail/guarantee.png'
 import type { QTIWaterfall, QTWaterfallSection, QTWaterfall } from '@quicktvui/quicktvui3'
 import { qtRef } from '@quicktvui/quicktvui3'
 import dialogs from '../../components/dialog/index.vue'
-const titleLeftText = ref("码              ")
+import { getDetailApi, getDetailImageListApi, getDetailQrCodeApi } from '../../api/index'
+import { useESRoute } from '@extscreen/es3-router'
+import { useESDevice } from '@extscreen/es3-core'
+const route = useESRoute()
+
+const device = useESDevice()
+
+const info = ref({
+  deliveryTypeDesc: '',
+  title: '',
+  dutyDesc: '',//商品进口税
+  price: {
+    symbol: '',
+    original: [12, 12],
+  },
+  newPrice: ''
+});
+
 const serviceList = ref([
   {
     icon: deliverys,
     title: '配送',
-    content: '海外直邮'
+    content: '海外直邮',
+    key: 'delivery'
   },
   {
     icon: guarantee,
     title: '保障',
-    content: '洋码头自营 | 正品保障 | 发货快'
+    content: '洋码头自营 | 正品保障 | 发货快',
+    key: 'guarantee'
   }
 ])
+const qrcodeImage = ref('') //二维码图片
 const purchaseShow = ref(false)
 const listDatas = qtRef();
 const discountList = qtRef();
@@ -113,7 +138,7 @@ const initDetailImage = () => {
   })
 }
 const initDiscountList = () => {
-  return new Array(6).fill(1).map((item, i) => {
+  return new Array(4).fill(1).map((item, i) => {
     return {
       type: 1,
       focus: { enable: true, scale: 1.1, border: false },
@@ -139,6 +164,7 @@ const initDetailWaterPrice = () => {
       width: 920,
       height: 60,
     },
+    price: info.value['original'],
   }
   sectionList.push(section)
   waterfall.value?.setSectionList(sectionList)
@@ -146,11 +172,68 @@ const initDetailWaterPrice = () => {
 const purchaseClick = () => {
   purchaseShow.value = true
 }
+const initDetailData = async () => {
+  let params = {
+    productid: route.params.productid,
+  }
+  getDetailApi(params).then((res) => {
+    if (res.status == 200) {
+      let data = JSON.parse(res.body);
+      console.log("路由信息")
+      console.log(data)
+      info.value = data;
+      info.value.newPrice = info.value.price.interval[0] ? info.value.price.interval[0] : info.value.price.original[0]
+      console.log(info.value.price.symbol)
+      console.log(info.value.price.original)
+    }
+  })
+}
+const initDetailImageListData = async () => {
+  let params = {
+    productid: route.params.productid,
+  }
+  getDetailImageListApi(params).then(res => {
+    if (res.status == 200) {
+      let data = JSON.parse(res.body);
+      console.log("图片信息")
+      console.log(data)
+      if (data.moduleList.length > 0) {
+        data.moduleList.forEach(item => {
+          item.picList.forEach((imgItem, index) => {
+            listDatas.value.push({
+              type: 1,
+              decoration: { top: 0 },
+              // count: `${index + 1}/${item.picList.length}`,
+              style: { width: 920, height: 1000 },
+              imageUrl: imgItem,
+            })
+          })
+        })
+      }
+    }
+  })
+}
+const initQrcodeImageData = async () => {
+  let parmas = {
+    page: 'subPackage2/pages/item/item',
+    scene: 'p=' + route.params.productid,
+  }
+  getDetailQrCodeApi(parmas).then(res => {
+    if (res.status == 200) {
+      let data = JSON.parse(res.body);
+      qrcodeImage.value = "data:image/jpeg;base64," + data.imageBytes
+    }
+  })
+}
 
-onMounted(() => {
-  listDatas.value = initDetailImage() //初始化数据
-  discountList.value = initDiscountList() //初始化数据
-  initDetailWaterPrice();
+onMounted(async () => {
+  // discountList.value = initDiscountList() //初始化数据
+  await initDetailData();
+  initDetailImageListData();
+  initQrcodeImageData();
+  initDetailWaterPrice(info.value);
+  console.log("设备信息")
+  console.log(device.getDevice())
 })
 </script>
 <style scoped>
@@ -200,12 +283,12 @@ onMounted(() => {
 
 .detail-left-box {
   width: 920px;
-  background-color: #1f1d26;
+  height: 1000px;
 }
 
 .detail-img-list {
   width: 920px;
-  height: 920px;
+  border-radius: 20px;
 }
 
 .detail-img-waterfall {
@@ -217,9 +300,8 @@ onMounted(() => {
 }
 
 .detail-img {
-  width: 800px;
-  height: 800px;
-  border-radius: 20px;
+  width: 920px;
+  height: 1000px;
 }
 
 .detail-img-count-box {
@@ -253,7 +335,7 @@ onMounted(() => {
   background-color: #c93729;
   border-radius: 50px;
   margin-top: 4px;
-  margin-left: 4px;
+  margin-left: 0px;
   position: absolute;
   z-index: 999;
 }
@@ -319,12 +401,14 @@ onMounted(() => {
 .goods-unit {
   font-size: 24px;
   color: #ff0000;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
+  width: 20px;
+  height: 26px;
 }
 
 .goods-price-text {
   font-size: 60px;
-  width: 150px;
+  width: 200px;
   height: 70px;
   line-height: 70px;
   color: #ff0000;
@@ -384,7 +468,7 @@ onMounted(() => {
 
 
 .service-cell-box {
-  height: 70px;
+  height: 50px;
   display: flex;
   flex-direction: row;
   margin-top: 20px;
@@ -414,10 +498,11 @@ onMounted(() => {
 
 .buy-box {
   width: 920px;
-  height: 300px;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 60px;
 }
 
 .purchase-box {
@@ -438,8 +523,16 @@ onMounted(() => {
 }
 
 .purchase-qr-code {
-  width: 400px;
-  height: 400px;
+  width: 320px;
+  height: 320px;
+}
+
+.purchase-qr-content {
+  font-size: 32px;
+  width: 200px;
+  height: 50px;
+  color: #fff;
+  margin-top: 20px;
 }
 
 .purchase-qr-text {

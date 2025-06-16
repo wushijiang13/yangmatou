@@ -1,20 +1,20 @@
 <template>
-    <div :class="size == 'default' ? 'goods-item-box' : 'goods-smail-item-box'" layout="${layout}" :focusable="true"
-        :enableFocusBorder="false" :focusScale="1.05" eventClick eventFocus>
-        <img :class="size == 'default' ? 'goods-item-img' : 'goods-smail-item-img'" :duplicateParentState="true"
-            :focusable="false" :enableFocusBorder="false"
-            src="https://img1.baidu.com/it/u=2666955302,2339578501&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750" />
-        <text-view :class="size == 'default' ? 'goods-label' : 'goods-smail-label'" :duplicateParentState="true"
-            :focusable="false" :textSize="26" :ellipsizeMode="2" enablePostTask :lines="1" gravity="center"
-            text="海蓝之谜 修复精华60ml 赠送" />
+    <div :class="size == 'default' ? 'goods-item-box' : 'goods-smail-item-box'" layout="${layout}">
+        <img :class="size == 'default' ? 'goods-item-img' : 'goods-smail-item-img'" :focusable="false"
+            :enableFocusBorder="false" src="${goodsIcon}" />
+        <text-view :class="size == 'default' ? 'goods-label' : 'goods-smail-label'" :focusable="false" :textSize="26"
+            :ellipsizeMode="2" enablePostTask :duplicateParentState="true" :lines="1" gravity="center"
+            text="${goodsName}" />
         <div v-show="isShowPrice" class="goods-price-box" :duplicateParentState="true">
-            <div class="goods-original-price-box" :duplicateParentState="true">
-                <qt-text class="goods-line" :duplicateParentState="true" :autoWidth="true" text="1232">
-                </qt-text>
+            <div showIf="${isGoodsPrice}" class="goods-original-price-box" :duplicateParentState="true">
+                <div class="goods-line" :duplicateParentState="true">
+                    <text-view :duplicateParentState="true" :autoWidth="true" text="${goodsPriceDeleteLine}">
+                    </text-view>
+                </div>
                 <text-view class="goods-price-unit" :duplicateParentState="true" :focusable="false" :textSize="14"
-                    :ellipsizeMode="2" enablePostTask gravity="bottom" text="￥" />
+                    :ellipsizeMode="2" enablePostTask :gravity="'bottom'" text="￥" />
                 <text-view :autoWidth="true" class="goods-original-price" :duplicateParentState="true"
-                    :focusable="false" :ellipsizeMode="2" enablePostTask gravity="bottom" text="1399" />
+                    :focusable="false" :ellipsizeMode="2" enablePostTask gravity="bottom" text="${goodsPrice}" />
             </div>
 
             <div class="goods-current-price-box">
@@ -22,7 +22,7 @@
                     :textSize="20" :ellipsizeMode="2" gravity="bottom" enablePostTask text="￥" />
                 <!-- <text-view class="goods-current-price" :duplicateParentState="true" :focusable="false" :textSize="26"
                     enablePostTask text="1200" /> -->
-                <qt-text class="goods-current-price" :autoWidth="true" text="1200"></qt-text>
+                <qt-text class="goods-current-price" :autoWidth="true" text="${goodsNewPrice}"></qt-text>
             </div>
         </div>
     </div>
@@ -38,8 +38,17 @@ const props = defineProps({
     size: {
         type: String,
         default: 'default'
+    },
+    row: {
+        type: Object,
+        default: () => {
+            return {}
+        }
     }
 })
+console.log("内部ITEM ROW")
+console.log(props.row)
+
 </script>
 
 <style scoped>
@@ -53,8 +62,6 @@ const props = defineProps({
     justify-content: center;
     focus-background-color: white;
 }
-
-
 
 .goods-item-img {
     width: 280px;
@@ -98,13 +105,22 @@ const props = defineProps({
 }
 
 .goods-line {
-    /* width: 100px; */
-    height: 1px;
-    background-color: white;
+    height: 2px;
     z-index: 999;
-    focus-background-color: black;
     position: absolute;
     top: 26px;
+    display: flex;
+    background-color: #fff;
+    focus-background-color: #000;
+}
+
+.goods-line-focus {
+    height: 2px;
+    z-index: 999;
+    position: absolute;
+    top: 26px;
+    display: flex;
+    background-color: #000;
 }
 
 .goods-price-unit {
@@ -164,6 +180,7 @@ const props = defineProps({
     align-items: center;
     justify-content: center;
     focus-background-color: white;
+
 }
 
 .goods-smail-item-img {
